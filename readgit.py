@@ -112,7 +112,7 @@ except FileNotFoundError:
 gmail_user = 'andrew.thynne@insight-centre.org'
 
 #Password to my gmail account
-gmail_password = 'Ollie2019!'
+gmail_password = input('Enter password: ')
 
 #input the sender of the email
 sent_from = gmail_user
