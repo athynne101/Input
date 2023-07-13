@@ -118,6 +118,9 @@ own password to my gmail account
 """
 gmail_password = input("Enter password: ")
 
+#Password to my gmail account
+gmail_password = input('Enter password: ')
+
 #input the sender of the email
 sent_from = gmail_user
 
