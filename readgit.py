@@ -1,6 +1,7 @@
 from git import Repo
 import os
 import smtplib
+#dd
 
 #the repository's url
 repo_url = None  
@@ -108,11 +109,14 @@ except FileNotFoundError:
 
     readme_response = 'No README in the directory'
 
+
 #email account that the email is sent from which will be my own email
 gmail_user = 'andrew.thynne@insight-centre.org'
 
-#Password to my gmail account
-gmail_password = 'Ollie2019!'
+"""This is the temporary setup for the password to gmail because I'm currently working on a randomized gmail as the sender of the email so that I don't have to use my 
+own password to my gmail account
+"""
+gmail_password = input("Enter password: ")
 
 #input the sender of the email
 sent_from = gmail_user
