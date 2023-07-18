@@ -1,7 +1,7 @@
 from git import Repo
 import os
 import smtplib
-#dd
+import sys 
 
 #the repository's url
 repo_url = None  
@@ -74,13 +74,19 @@ else:
 
 try:
 
+    word = "License"
+
     #gets file that contains license from the repository 
     license = repo.working_tree_dir + "/LICENSE.TXT"
 
     with open(license, "r") as license_file:
 
         #license_lines contains the repository's license file
-        license_response = license_file.read()
+        license_content = license_file.readlines()
+        for line in license_content:
+            if word in line or str.upper(word) in line:
+                license_response = line
+                break
 
 
     
@@ -110,58 +116,28 @@ except FileNotFoundError:
     readme_response = 'No README in the directory'
 
 
-#email account that the email is sent from which will be my own email
 gmail_user = 'andrew.thynne@insight-centre.org'
-
-"""This is the temporary setup for the password to gmail because I'm currently working on a randomized gmail as the sender of the email so that I don't have to use my 
-own password to my gmail account
-"""
-gmail_password = input("Enter password: ")
-
-#Password to my gmail account
-gmail_password = input('Enter password: ')
-
-#input the sender of the email
+gmail_password = input('Enter the password: ')
+gmail_receiver = input('Enter your email address: ')
 sent_from = gmail_user
-
-#asks the user to input their own email which is where the email will be sent to
-gmail_receiver = input("Enter your email:")
-
 to = [gmail_receiver]
+subject = 'License and README of Your Repository'
+body = f'License: {license_response} and ReadMe: {readme_response}'
 
-#subject of the email
-subject = 'Whats Up'
-
-#body of the email
-body = 'License: {0} and README: {1}'.format(license_response, readme_response)
-
-#sets up the entie email
 email_text = """\
-
 From: %s
-
 To: %s
-
 Subject: %s
 
 %s
 """ % (sent_from, ", ".join(to), subject, body)
 
 try:
-
     smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-
     smtp_server.ehlo()
-
     smtp_server.login(gmail_user, gmail_password)
-
     smtp_server.sendmail(sent_from, to, email_text)
-
     smtp_server.close()
-
     print ("Email sent successfully!")
-
-#what will happen if the email fails to send
 except Exception as ex:
-
     print ("Something went wrong….",ex)
