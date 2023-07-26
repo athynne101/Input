@@ -2,6 +2,7 @@ from git import Repo
 import os
 import smtplib
 import sys 
+from gitlab import Gitlab
 
 #the repository's url
 repo_url = None  
@@ -22,6 +23,13 @@ repo_choice = None
 or use an existing file that contains the repository.
 Keeps running if the user doesn't input either y or n
 """
+
+#gl = Gitlab('gitlab_url')
+#gl.auth.login(username='username', password='password')
+#user = gl.users.get_by_username('username')
+#respositories = user.projects.list()
+#for repo in repositories:
+#   print(repo.name)
 while True:
 
     #asks the user if they want to clone the repository
@@ -83,10 +91,14 @@ try:
 
         #license_lines contains the repository's license file
         license_content = license_file.readlines()
-        for line in license_content:
-            if word in line or str.upper(word) in line:
-                license_response = line
-                break
+        if license_content == []:
+            license_response = "There is a license file in the repository but it is empty."
+        else:
+            for line in license_content:
+                if word in line or str.upper(word) in line:
+                    license_response = f"{line}".strip()
+                    break
+            
 
 
     
@@ -94,7 +106,7 @@ try:
 #deals with the issue of no license file in the repository 
 except FileNotFoundError: 
 
-    license_response = 'No License in the directory'
+    license_response = 'No License in the directory.'
 
 
 try:
@@ -105,7 +117,11 @@ try:
     with open(readme, "r") as readme_file:
 
         #stores all lines of readme file in readme_lines variable
-        readme_response = readme_file.read()
+        readme_content = readme_file.read()
+        if len(readme_content) == 0:
+                readme_response = "There is a README in the repository but it is empty."
+        else:
+                readme_response = "There is a completed README in the repository."
 
     
 
@@ -116,13 +132,16 @@ except FileNotFoundError:
     readme_response = 'No README in the directory'
 
 
-gmail_user = 'andrew.thynne@insight-centre.org'
-gmail_password = input('Enter the password: ')
-gmail_receiver = input('Enter your email address: ')
+                
+                
+gmail_user = 'ahelt099@gmail.com'
+gmail_password = 'bymbqmvdoxchalys'
+gmail_receiver = input('Enter your email: ')
 sent_from = gmail_user
 to = [gmail_receiver]
 subject = 'License and README of Your Repository'
-body = f'License: {license_response} and ReadMe: {readme_response}'
+body = f"""License: {license_response}. 
+ReadMe: {readme_response}"""
 
 email_text = """\
 From: %s
