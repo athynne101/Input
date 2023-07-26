@@ -135,7 +135,7 @@ except FileNotFoundError:
                 
                 
 gmail_user = 'ahelt099@gmail.com'
-gmail_password = 'bymbqmvdoxchalys'
+gmail_password = input('Enter password: '):
 gmail_receiver = input('Enter your email: ')
 sent_from = gmail_user
 to = [gmail_receiver]
